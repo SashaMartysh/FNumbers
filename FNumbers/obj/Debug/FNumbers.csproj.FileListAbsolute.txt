@@ -1,0 +1,6 @@
+D:\IT\Visual Projects\FNumbers\FNumbers\bin\Debug\FNumbers.exe.config
+D:\IT\Visual Projects\FNumbers\FNumbers\obj\Debug\FNumbers.csprojResolveAssemblyReference.cache
+D:\IT\Visual Projects\FNumbers\FNumbers\bin\Debug\FNumbers.exe
+D:\IT\Visual Projects\FNumbers\FNumbers\bin\Debug\FNumbers.pdb
+D:\IT\Visual Projects\FNumbers\FNumbers\obj\Debug\FNumbers.exe
+D:\IT\Visual Projects\FNumbers\FNumbers\obj\Debug\FNumbers.pdb
