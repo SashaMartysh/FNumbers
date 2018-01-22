@@ -1,0 +1,5 @@
+Library/
+*.sln
+*.csproj
+.vs/
+FNumbers/FNumbers/bin/Debug

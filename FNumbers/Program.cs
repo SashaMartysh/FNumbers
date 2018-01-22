@@ -19,6 +19,7 @@ namespace FNumbers
             Console.WriteLine("Second number is: " + f2.ToString() + " (" + i2.ToString("N") + ")");
             Console.WriteLine("\nTheir summa is: " + (f1 + f2));
             Console.WriteLine("Their subtraction is: " + (f1 - f2));
+            Console.WriteLine("Their division is: " + (f1 / f2));
             int random  = new Random().Next(0, 1000);
             Console.WriteLine("Also " + f1 + " / " + random + " = " + (f1/random));
             Console.WriteLine(f1 + " > " + f2 + " : " + (f1>f2));
@@ -28,13 +29,10 @@ namespace FNumbers
     }
 
     // "Fantastic Number" is used for operate such numbers: 0.05, 500, 2K, 3.5M, 500B etc...
-    public class FNumber
+    public struct FNumber
     {
         public float value { get; private set; }
         public Rank rank { get; private set; }
-
-        public FNumber() : this (0f, Rank.units)
-        { }
 
         public FNumber (float value) : this (value, Rank.units)
         { }
@@ -114,29 +112,26 @@ namespace FNumbers
         // Операция сложения. 
         public static FNumber operator + (FNumber fn1, FNumber fn2)
         {
-            // Нахожу, какое из числ большее, чтобы к нему потом прибавить меньшее.
-            FNumber min;
-            FNumber max;
-            if ((int)fn2.rank > (int)fn1.rank)
+            // Привожу числа к одному рангу.
+            if (fn1.rank > fn2.rank)
             {
-                max = fn2;
-                min = fn1;
+                while (fn2.rank < fn1.rank)
+                {
+                    fn2.value /= 1000f;
+                    fn2.rank++;
+                }
             }
-            else
+            else if (fn1.rank < fn2.rank)
             {
-                max = fn1;
-                min = fn2;
-            }
-
-            // Перевожу меньшее число к рангу большего.
-            while ((int)min.rank < (int)max.rank)
-            {
-                min.value /= 1000f;
-                min.rank++;
+                while (fn1.rank < fn2.rank)
+                {
+                    fn1.value /= 1000f;
+                    fn1.rank++;
+                }
             }
 
             // Добавляю и возвращаю.
-            return new FNumber(max.value + min.value, max.rank);
+            return new FNumber(fn1.value + fn2.value, fn1.rank);
         }
         public static FNumber operator + (FNumber fNumber, float f)
         {
@@ -158,30 +153,22 @@ namespace FNumbers
         // Операция вычитания. 
         public static FNumber operator - (FNumber fn1, FNumber fn2)
         {
-            // Нахожу, какое из чисел больше по модулю, привожу другое число к его рангу.
-            FNumber maxByABS;
-            FNumber minByABS;
+            // Привожу числа к одному рангу.
             if (fn1.rank > fn2.rank)
             {
-                maxByABS = fn1;
-                minByABS = fn2;
+                while (fn2.rank < fn1.rank)
+                {
+                    fn2.value /= 1000f;
+                    fn2.rank++;
+                }
             }
              else if (fn1.rank < fn2.rank)
              {
-                 maxByABS = fn2;
-                 minByABS = fn1;
-             }
-             else  // если они равны по рангу, то неважно.
-             {
-                maxByABS = fn2;
-                minByABS = fn1;
-            }
-
-            // Привожу числа к ожному рангу.
-            while (minByABS.rank < maxByABS.rank)
-            {
-                minByABS.value /= 1000f;
-                minByABS.rank ++;
+                while (fn1.rank < fn2.rank)
+                {
+                    fn1.value /= 1000f;
+                    fn1.rank++;
+                }
             }
 
             // Делаю вычитание.
@@ -260,25 +247,22 @@ namespace FNumbers
         }
         public static float operator / (FNumber fn1, FNumber fn2)
         {
-            // Нахожу, какое из числ большее, чтобы к его рангу приравнять ранг меньшего.
-            FNumber min;
-            FNumber max;
-            if ((int)fn2.rank > (int)fn1.rank)
+            // Привожу числа к одному рангу.
+            if (fn1.rank > fn2.rank)
             {
-                max = fn2;
-                min = fn1;
+                while (fn2.rank < fn1.rank)
+                {
+                    fn2.value /= 1000f;
+                    fn2.rank++;
+                }
             }
-            else
+            else if (fn1.rank < fn2.rank)
             {
-                max = fn1;
-                min = fn2;
-            }
-
-            // Перевожу меньшее число к рангу большего.
-            while ((int)min.rank < (int)max.rank)
-            {
-                min.value /= 1000f;
-                min.rank++;
+                while (fn1.rank < fn2.rank)
+                {
+                    fn1.value /= 1000f;
+                    fn1.rank++;
+                }
             }
 
             return fn1.value / fn2.value;
